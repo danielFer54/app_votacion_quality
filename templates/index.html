@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voting APP</title>
+    <link rel="stylesheet" href="../static/styles/estilosIndex.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="../static/image/logo.png" />
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="../static/image/logo.png" alt="Logo Institucional" />
+                <h1>Voting APP</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#caracteristicas">Características</a></li>
+                    <li><a href="#estadisticas">Estadísticas</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="container hero-content">
+            <h2>Plataforma institucional de votación</h2>
+            <p>¡Bienvenido a Voting APP! Plataforma para participar en tu proceso electoral de forma segura y eficiente.
+            <div class="btn-group">
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Iniciar Sesión</a>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="caracteristicas">
+        <div class="container">
+            <div class="section-title">
+                <h3>Características Institucionales</h3>
+                <p>Voting APP es la herramienta de elección para procesos de votación modernos, auditables y confiables.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><span>🔒</span></div>
+                    <h4>Seguridad de Alto Nivel</h4>
+                    <p>Implementamos estándares internacionales de cifrado para garantizar la confidencialidad y la autenticidad del sufragio electrónico.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><span>📊</span></div>
+                    <h4>Visualización Instantánea</h4>
+                    <p>Acceda a resultados y métricas en tiempo real mediante paneles dinámicos y precisos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><span>📱</span></div>
+                    <h4>Accesibilidad Multiplataforma</h4>
+                    <p>Compatible con diversos dispositivos y navegadores, facilitando el acceso desde cualquier ubicación.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <section class="stats" id="estadisticas">
+    <div class="container">
+        <div class="section-title">
+            <h3>¡Más Información!</h3>
+            <p>Nuestra plataforma ha sido implementada con éxito en la Universidad Santo Tomás - Seccional Tunja, fortaleciendo la transparencia y eficiencia en sus elecciones internas.</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>100%</h4>
+                <p>Eficacia en los procesos</p>
+            </div>
+            <div class="stat-item">
+                <h4>2M+</h4>
+                <p>Votos Procesados</p>
+            </div>
+            <div class="stat-item">
+                <h4>99.9%</h4>
+                <p>Disponibilidad del Servicio</p>
+            </div>
+            <div class="stat-item">
+                <h4>100%</h4>
+                <p>Índice de Satisfacción</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer id="contacto">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Institución</h4>
+                <ul>
+                    <li><a href="#">Quiénes Somos</a></li>
+                    <li><a href="#">Proyectos</a></li>
+                    <li><a href="#">Noticias</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Aplicaciones</h4>
+                <ul>
+                    <li><a href="#">Corporativas</a></li>
+                    <li><a href="#">Académicas</a></li>
+                    <li><a href="#">Ciudadanas</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Soporte</h4>
+                <ul>
+                    <li><a href="#">Ayuda</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Asistencia</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="mailto:info@votasystem.com">votingapp@usantoto.edu.co</a></li>
+                    <li><a href="#">Línea gratuita nacional: 01 8000 932 340</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Voting APP. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

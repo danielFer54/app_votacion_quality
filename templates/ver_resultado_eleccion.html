@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados - {{ eleccion.nombre }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">📊 Resultados de: {{ eleccion.nombre }}</h2>
+
+{% if resultados and eleccion.estado == 'finalizada' %}
+<div class="alert alert-success text-center fs-5">
+    🥇 El ganador es <strong>{{ resultados[0].candidato }}</strong> con <strong>{{ resultados[0].votos }}</strong> voto(s)
+</div>
+{% elif resultados %}
+<div class="alert alert-info text-center fs-6">
+    ℹ️ Esta elección aún no ha finalizado. Los resultados pueden cambiar.
+</div>
+{% endif %}
+
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Propuesta</th>
+                <th>Votos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in resultados %}
+            <tr class="{% if loop.index0 == 0 %}table-warning fw-bold{% endif %}">
+                <td>{{ loop.index }}</td>
+                <td>
+                    {% set perfil = c.get('profile') %}
+                    {% if perfil and perfil.profile_picture %}
+                        <img src="{{ url_for('uploaded_file', filename=perfil.profile_picture) }}"
+                             alt="Foto"
+                             class="rounded-circle"
+                             style="width: 40px; height: 40px; object-fit: cover; cursor: pointer;"
+                             onclick="showImageInModal(this.src)">
+                    {% else %}
+                        <img src="{{ url_for('uploaded_file', filename='default.jpg') }}"
+                             alt="Sin foto"
+                             class="rounded-circle"
+                             style="width: 40px; height: 40px; object-fit: cover; cursor: pointer;"
+                             onclick="showImageInModal(this.src)">
+                    {% endif %}
+                </td>
+                <td>{{ c.candidato }}</td>
+                <td>@{{ c.username }}</td>
+                <td>{{ c.propuesta }}</td>
+                <td><span class="badge bg-primary">{{ c.votos }}</span></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No hay candidatos registrados para esta elección.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Gráfico de Pastel (Google Chart) -->
+    <div id="votos_chart" style="height: 300px;" class="mt-5"></div>
+
+    <!-- Gráfico de Barras (Chart.js) -->
+    <div class="mt-4">
+        <h5 class="text-center mb-3">📈 Gráfico de Barras - Votos por Candidato</h5>
+        <canvas id="barChart" height="100"></canvas>
+    </div>
+
+    <a href="{{ url_for('resultados_elecciones') }}" class="btn btn-secondary mt-4">← Volver</a>
+    <a href="{{ url_for('ver_resultado_eleccion_print', eleccion_id=eleccion.id) }}"
+   class="btn btn-secondary mt-4">  🖨️ Vista para imprimir
+</a>
+
+</div>
+
+<!-- Modal para ampliar imagen -->
+<div class="modal fade" id="profileImageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h6 class="modal-title">Foto del Candidato</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalProfileImage" class="img-fluid rounded shadow" src="" alt="Imagen Ampliada">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS: Modal -->
+<script>
+    function showImageInModal(src) {
+        document.getElementById('modalProfileImage').src = src;
+        const modal = new bootstrap.Modal(document.getElementById('profileImageModal'));
+        modal.show();
+    }
+</script>
+
+<!-- Google Pie Chart -->
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Candidato', 'Votos'],
+            {% for c in resultados %}
+                ['{{ c.candidato }}', {{ c.votos }}],
+            {% endfor %}
+        ]);
+        var options = {
+            title: 'Distribución de Votos',
+            pieHole: 0.4,
+            height: 300,
+            legend: { position: 'right' }
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('votos_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<!-- Chart.js Bar Chart -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('barChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for c in resultados %}'{{ c.candidato }}',{% endfor %}],
+                datasets: [{
+                    label: 'Votos',
+                    data: [{% for c in resultados %}{{ c.votos }},{% endfor %}],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        precision: 0
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
